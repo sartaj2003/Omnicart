@@ -1,0 +1,143 @@
+<h1 style="text-align:center;">🛒 Your Cart</h1>
+
+<% total = 0 %>
+
+<div style="max-width:800px; margin:auto;">
+
+  <% @cart.cart_items.each do |item| %>
+
+    <% product = item.product %>
+    <% subtotal = product.price_cents * item.quantity %>
+    <% total += subtotal %>
+
+    <div style="
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:15px;
+      border-bottom:1px solid #eee;
+    ">
+
+      <div>
+        <h3><%= product.name %></h3>
+        <p>Qty: <%= item.quantity %></p>
+        <p>
+          ₹ <%= number_with_delimiter(product.price_cents / 100) %>
+        </p>
+      </div>
+
+      <div>
+        <strong>
+          ₹ <%= number_with_delimiter(subtotal / 100) %>
+        </strong>
+      </div>
+
+      <%= button_to "Remove",
+          cart_cart_item_path(item),
+          method: :delete,
+          style:"background:red;color:white;border:none;padding:8px;border-radius:6px;" %>
+
+    </div>
+
+  <% end %>
+
+
+  <!-- TOTAL -->
+
+  <h2 style="text-align:right; margin-top:20px;">
+    Total: ₹ <%= number_with_delimiter(total / 100) %>
+  </h2>
+
+
+  <!-- PAY BUTTON -->
+
+  <button id="pay-btn"
+    style="
+      width:100%;
+      padding:15px;
+      background:black;
+      color:white;
+      font-size:18px;
+      border:none;
+      border-radius:10px;
+      cursor:pointer;
+      margin-top:20px;
+    ">
+    Pay with Razorpay 🚀
+  </button>
+
+</div>
+
+
+
+<!-- RAZORPAY SCRIPT -->
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+
+document.getElementById("pay-btn").onclick = async function () {
+
+  const response = await fetch("/checkout", {
+    method: "POST",
+    headers: {
+      "X-CSRF-Token": document.querySelector("[name='csrf-token']").content,
+      "Content-Type": "application/json"
+    }
+  });
+
+  const data = await response.json();
+
+  const options = {
+    key: data.key,
+    amount: data.amount,
+    currency: "INR",
+    name: "Omnicart",
+    description: "Test Transaction",
+    order_id: data.razorpay_order_id,
+
+   handler: function (response) {
+
+  fetch("/verify_payment", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-Token": document.querySelector("[name='csrf-token']").content
+    },
+    body: JSON.stringify({
+      razorpay_payment_id: response.razorpay_payment_id,
+      razorpay_order_id: response.razorpay_order_id,
+      razorpay_signature: response.razorpay_signature
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if(data.success){
+      alert("✅ Payment successful");
+      window.location.href = "/orders/" + data.order_id;
+    }else{
+      alert("Payment verify failed");
+    }
+  });
+
+},
+
+    prefill: {
+      name: "<%= current_user.email %>",
+      email: "<%= current_user.email %>",
+      contact: "9999999999"
+    },
+
+    theme: {
+      color: "#000"
+    }
+  };
+
+  const rzp = new Razorpay(options);
+  rzp.open();
+};
+
+</script>
+
+
+

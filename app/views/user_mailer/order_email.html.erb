@@ -1,0 +1,94 @@
+<div style="font-family: Arial, sans-serif; padding:20px;">
+
+  <h1 style="color:#111;">
+    🎉 Order Confirmed!
+  </h1>
+
+  <p>
+    Hi <strong><%= @order.user.email %></strong>,
+  </p>
+
+  <p>
+    Thank you for shopping with <strong>Omnicart</strong>.
+    Your order has been successfully placed.
+  </p>
+
+  <hr>
+
+  <h2>🧾 Order Details</h2>
+
+  <p>
+    <strong>Order ID:</strong>
+    #<%= @order.id %>
+  </p>
+
+  <p>
+    <strong>Status:</strong>
+    <%= @order.status.capitalize %>
+  </p>
+
+  <p>
+    <strong>Payment Method:</strong>
+    <%= @order.payment_method %>
+  </p>
+
+  <p>
+    <strong>Delivery Address:</strong><br>
+    <%= @order.address %>
+  </p>
+
+  <hr>
+
+  <h2>🛒 Items Purchased</h2>
+
+  <table style="width:100%; border-collapse: collapse;">
+    <thead>
+      <tr style="background:#f5f5f5;">
+        <th style="padding:10px; border:1px solid #ddd;">Product</th>
+        <th style="padding:10px; border:1px solid #ddd;">Qty</th>
+        <th style="padding:10px; border:1px solid #ddd;">Price</th>
+        <th style="padding:10px; border:1px solid #ddd;">Total</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @order.order_items.each do |item| %>
+        <tr>
+          <td style="padding:10px; border:1px solid #ddd;">
+            <%= item.product.name %>
+          </td>
+
+          <td style="padding:10px; border:1px solid #ddd;">
+            <%= item.quantity %>
+          </td>
+
+          <td style="padding:10px; border:1px solid #ddd;">
+            ₹ <%= item.price_cents / 100.0 %>
+          </td>
+
+          <td style="padding:10px; border:1px solid #ddd;">
+            ₹ <%= (item.price_cents * item.quantity) / 100.0 %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <hr>
+
+  <h2>
+    💰 Total Paid:
+    ₹ <%= @order.total_amount / 100.0 %>
+  </h2>
+
+  <br>
+
+  <p>
+    We hope to see you again soon ❤️
+  </p>
+
+  <p>
+    — Team Omnicart
+  </p>
+
+</div>

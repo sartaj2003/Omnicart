@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Omnicart</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <!-- ✅ CSS via Sprockets -->
+    <%= stylesheet_link_tag "application", data: { turbo_track: "reload" } %>
+
+    <!-- ✅ JS via Importmap (Rails 7/8 standard) -->
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body>
+
+<div style="background:black; padding:15px; display:flex; justify-content:space-between; align-items:center;">
+  
+  <h2 style="color:white;">Omnicart</h2>
+
+  <!-- SEARCH BAR -->
+  <form action="/products" method="get" style="display:flex; gap:10px;">
+    <input type="text" name="search" placeholder="Search products..."
+     style="padding:8px; width:250px; border-radius:6px; border:none;">
+
+    <button type="submit"
+     style="padding:8px 15px; background:orange; color:white; border:none; border-radius:6px;">
+     Search
+    </button>
+  </form>
+
+</div>
+
+    <%= yield %>
+  </body>
+</html>
+

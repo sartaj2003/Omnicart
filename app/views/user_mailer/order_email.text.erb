@@ -1,0 +1,17 @@
+Order Confirmed!
+
+Thanks for shopping with Omnicart.
+
+Order ID: <%= @order.id %>
+Total Amount: ₹ <%= @order.total_amount / 100.0 %>
+
+Items:
+<% @order.order_items.each do |item| %>
+- <%= item.product.name %> (Qty: <%= item.quantity %>)
+<% end %>
+
+Delivery Address:
+<%= @order.address %>
+
+Payment Method:
+<%= @order.payment_method %>
