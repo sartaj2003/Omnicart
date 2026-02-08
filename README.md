@@ -1,24 +1,29 @@
-# README
+# 🛒 Omnicart – Ruby on Rails E-Commerce App
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Omnicart is a full-featured e-commerce web application built using Ruby on Rails with real-world functionality like authentication, cart, payment gateway and email system.
 
-Things you may want to cover:
+## 🚀 Features
+- User authentication (Devise)
+- Admin panel for product management
+- Add to cart & remove from cart
+- Category & product search filter
+- Razorpay payment integration
+- Order confirmation email (Action Mailer)
+- Background jobs using Sidekiq & Redis
+- Product image upload (Active Storage)
 
-* Ruby version
+## 🛠 Tech Stack
+Ruby on Rails, Ruby, SQLite/PostgreSQL, Devise, Razorpay, Sidekiq, Redis, Action Mailer, Active Storage, Hotwire(stimulus).
 
-* System dependencies
+## ⚙️ Setup
+git clone https://github.com/sartaj2003/omnicart.git  
+cd omnicart  
+bundle install  
+rails db:create db:migrate db:seed  
+rails s  
 
-* Configuration
+Visit: http://localhost:3000
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+## 👨‍💻 Author
+Sartaj – Full Stack Rails Developer
+```0
